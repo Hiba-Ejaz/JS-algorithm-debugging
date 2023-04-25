@@ -5,11 +5,11 @@ from 0 to 100
 
 const printNum = () => {
     for (var i = 0; i <= 100; i++) {
-        setTimeout(() => console.log(i), 1000)
+         console.log(i);
     }
 }
 
-printNum()
+printNum();
 
 /*
 2. Given the array below:
