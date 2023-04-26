@@ -22,25 +22,35 @@ You only need to produce the same array as expected result, no need to consider 
 possibility.
  */
 
-let myArr = ['12-24-2014', '09-2022-23', '12-30-2021', '08-02-2021', '07-15-2018', '2019-12-14', '2022-14-12']
+let myArr = ['12-24-2014', '09-2022-23', '12-30-2021', '08-02-2021', '07-15-2018', '2019-12-14', '2022-14-12'] //all dates are not written in order month-day-year, but im considering the instruction.
 const fixDate = (array) => {
-    /* provide your code here */
+    for(let i=0;i<array.length;i++){
+        let splittedString=array[i].split("-");
+        array[i]=(`${splittedString[1]} - ${splittedString[0]} - ${splittedString[2]}`);
+    }
+    return array;
 }
 let newArr = fixDate(myArr)
-console.log(newArr)
-
+console.log(newArr);
 /*
 3. Counter function
 Write a counter funtion to print out in console the time difference between 2 given date
 Expected result in the console: 11 days - 13 hours - 38 minutes - 20 seconds
 */
-const dateFrom = new Date(500000)
-const dateTo = new Date(1000000000)
+const dateFrom = new Date(500000);
+const dateTo = new Date(1000000000);
 const counter = (from, to) => {
-    /* provide your code here */
-}
+let seconds = (to.getTime() - from.getTime())/1000;
+let minutes=(seconds/60);
+let hours=(minutes/60);
+let days=(hours/24);
+let hrs=(hours%24);
+let min=(hrs%1)*60;
+let sec=(min%1)*60;
+return `${Math.floor(days)} days - ${Math.floor(hrs)} days - ${Math.floor(min)} minutes  - ${Math.floor(sec)} sec` 
+};
 const timer = counter(dateFrom, dateTo)
-console.log(timer)
+console.log(timer);
 
 /*
 4. Provide logic for function generateNewFolderName, which receive an array as argument. Everytime the function gets called,
@@ -50,15 +60,24 @@ to array, and so on.
 */
 
 const generateNewFolderName = (existingFolders) => {
-    /*  provide your code here */
+    for(let i=0;i<=existingFolders.length;i++){
+if(i===0 && (!existingFolders.includes("New Folder"))){ //although it wont be there, just fulfilling the statement requirement
+    existingFolders.push("New Folder");
+   break;
+}     
+else if(!existingFolders.includes(`New Folder (${i})`)){ //although it wont be there, just fulfilling the statement requirement
+        existingFolders.push(`New Folder (${i})`);
+        break;
+    }
+    }
 }
-
 let folder = []
 generateNewFolderName(folder)
 generateNewFolderName(folder)
 generateNewFolderName(folder)
 generateNewFolderName(folder)
 console.log(folder) //expect to see ['New Folder', 'New Folder (1)', 'New Folder (2)', 'New Folder (3)']
+
 
 /* 5. Write a higher order function in JavaScript called debounce that can be used to debounce a callback function. 
 The debounce function should take two arguments: the callback function to debounce and the delay time in milliseconds. 
@@ -67,6 +86,16 @@ If the debounced function is called again within the delay time, the timer shoul
 Your solution should be implemented in JavaScript without using any third-party libraries or frameworks. */
 const debounce = (callback, timer) => {
     //Your code goes here
+    
+    let tId;
+
+    return (...args) => {
+      clearTimeout(tId);
+    }
+  
+      tId = setTimeout(() => {
+        callback(...args);
+      }, delay);
 }
 
 //This is the test code for the debounce function
@@ -80,7 +109,7 @@ If the new function is called with the same arguments again, it should return th
 The new function should have a cache property that stores the cached results. */
 
 const cacheFunc = (callback) => {
-    //Your code goes here
+    
 }
 
 //This is the test code for cacheFunc
@@ -115,7 +144,9 @@ const createRecipe = (name, instructions) => {
 }
 
 const withMetrics = (time, calories) => {
-
+return function(name,instructions){
+    return createRecipe(time,calories,name,instructions);
+}
 }
 
 const pancakeRecipe = withMetrics(30, 200)(createRecipe('Pancakes', 'Mix flour, eggs, and milk. Cook on a griddle.'))
