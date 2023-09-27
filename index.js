@@ -84,19 +84,17 @@ The debounce function should take two arguments: the callback function to deboun
 The debounced function returned by debounce should wait until the delay time has passed before calling the callback function. 
 If the debounced function is called again within the delay time, the timer should be reset and the callback function should be called after the delay time has passed. 
 Your solution should be implemented in JavaScript without using any third-party libraries or frameworks. */
-const debounce = (callback, timer) => {
-    //Your code goes here
-    
-    let tId;
-
-    return (...args) => {
-      clearTimeout(tId);
-    }
+const debounce = (callback, delay) => {
+    let timerId;
   
-      tId = setTimeout(() => {
+    return (...args) => {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
         callback(...args);
       }, delay);
-}
+    };
+  };
+  
 
 //This is the test code for the debounce function
 for (let i = 0; i < 5; i++) {
@@ -109,7 +107,17 @@ If the new function is called with the same arguments again, it should return th
 The new function should have a cache property that stores the cached results. */
 
 const cacheFunc = (callback) => {
-    
+    let cache={}
+    return (...args)=>{
+        const key = JSON.stringify(args);
+        if(key in cache){
+            console.log(cache[key]);
+        }
+        else{
+           cache[key]=callback(args);
+           return cache[key];
+        }
+    }
 }
 
 //This is the test code for cacheFunc
